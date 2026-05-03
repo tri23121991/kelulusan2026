@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengumuman KELULUSAN 2026 - SMAN 3 Wonogiri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f0f2f5; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .nilai-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #e2e8f0; }
+        .nilai-row:last-child { border-bottom: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<header class="gradient-bg text-white py-8 px-4 text-center shadow-lg">
+    <h1 class="text-2xl md:text-3xl font-bold uppercase tracking-wider">SMA Negeri 3 Wonogiri</h1>
+    <p class="text-sm md:text-base opacity-90 mt-2">Pengumuman Kelulusan Tahun Ajaran 2026</p>
+</header>
+
+<main class="flex-grow container mx-auto px-4 py-10 max-w-lg">
+
+    <!-- LOGIN -->
+    <div id="loginSection" class="glass-card p-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center border-b pb-4">Login Peserta</h2>
+        
+        <div>
+            <label class="block text-sm font-medium text-gray-700">NISN</label>
+            <input type="text" id="inputNisn" placeholder="Masukkan 10 digit NISN"
+                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+        </div>
+
+        <button onclick="checkResult()"
+            class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg mt-4">
+            Lihat Hasil
+        </button>
+    </div>
+
+    <!-- HASIL -->
+    <div id="resultSection" class="glass-card p-8 hidden">
+        <h2 class="text-2xl font-bold text-center mb-4">Hasil Kelulusan</h2>
+
+        <div class="space-y-2 text-gray-700">
+            <div class="flex justify-between"><span>Nama:</span> <span id="resName" class="font-semibold text-right uppercase"></span></div>
+                <div class="flex justify-between"><span>NISN:</span> <span id="resNisn" class="font-semibold"></span></div>
+            <div class="flex justify-between"><span>Tempat, tanggal lahir: </span> <span id="resTtl"class="font-semibold"></span></div>
+            <div class="flex justify-between"><span>Orang Tua: </span><span id="resOrangtua"class="font-semibold"></span></div>
+            <div class="flex justify-between"><span>Keputusan: </span><span id="resKeputusan"class="font-semibold"></span></div>
+            <div class="my-6 p-4 border-2 border-green-500 bg-green-50 rounded-xl">
+<p class="text-center text-gray-600 text-xs uppercase tracking-widest">Status Kelulusan</p>
+    <div class="font-bold text-green-600 text-center text-4xl">LULUS</div>
+</div>
+
+        <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                    <p class="font-bold text-blue-800 mb-2 text-sm text-center">Dokumen dari Sekolah</p>
+            <div id="resNilai"></div>
+        </div>
+
+        <button onclick="location.reload()" class="mt-4 w-full bg-gray-300 py-2 rounded">
+            Kembali
+        </button>
+    </div>
+
+</main>
+
+<footer class="py-6 text-center text-gray-400 text-xs">
+    &copy; 2026 Tim IT SMAN 3 Wonogiri
+</footer>
+
+<!-- SCRIPT BENAR -->
+<script>
+const dataPeserta = [
+{nama:"AHMAD SAIFUL RIJAL",nisn:"0089115371",ttl:"WONOGIRI, 23-08-2008",orangtua:"MARTANTO",keputusan:"Surat No 400.3.11.1/0430.1/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANJANI LISTYAWATI",nisn:"0087520554",ttl:"WONOGIRI, 01-08-2008",orangtua:"WAWAN PURNOMO",keputusan:"Surat No 400.3.11.1/0430.2/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AULIA NATHANIAN ERSA",nisn:"0081398506",ttl:"KARANGANYAR, 13-08-2008",orangtua:"SUNARSO",keputusan:"Surat No 400.3.11.1/0430.3/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"BERLIANAYZA SEKAR KIRANA",nisn:"0087473500",ttl:"WONOGIRI, 22-01-2008",orangtua:"KARMIN",keputusan:"Surat No 400.3.11.1/0430.4/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DANI NUR ROHIM",nisn:"0075869165",ttl:"WONOGIRI, 05-03-2007",orangtua:"TRIYONO",keputusan:"Surat No 400.3.11.1/0430.5/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DANU NUR ROHMAN",nisn:"0071440616",ttl:"WONOGIRI, 05-03-2007",orangtua:"TRIYONO",keputusan:"Surat No 400.3.11.1/0430.6/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DAVINA KEYZIA DESTRI ANANDA",nisn:"0074208322",ttl:"WONOGIRI, 30-12-2007",orangtua:"SUPRIYANTO",keputusan:"Surat No 400.3.11.1/0430.7/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DEZMA YUDHA ARIKHZA",nisn:"0081113001",ttl:"WONOGIRI, 01-02-2008",orangtua:"ARI SURYO HADI",keputusan:"Surat No 400.3.11.1/0430.8/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DIAH AYU MARHANINGSIH",nisn:"0076066278",ttl:"WONOGIRI, 16-12-2007",orangtua:"SUPARNO",keputusan:"Surat No 400.3.11.1/0430.9/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FAHMI NUR ARDIANSYAH",nisn:"0081969506",ttl:"WONOGIRI, 06-01-2008",orangtua:"SUPRIYANTO",keputusan:"Surat No 400.3.11.1/0430.10/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FAHRI NURIL HABIBULLAH",nisn:"0081978563",ttl:"WONOGIRI, 26-03-2008",orangtua:"AGUS SURAKIM",keputusan:"Surat No 400.3.11.1/0430.11/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FEBRIAN WIBISONO",nisn:"0082633105",ttl:"WONOGIRI, 26-02-2008",orangtua:"HERU WIBISONO",keputusan:"Surat No 400.3.11.1/0430.12/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"GALUH PUTRI HAYATI",nisn:"0087883351",ttl:"KARAWANG, 07-11-2008",orangtua:"KRIS HANDOKO",keputusan:"Surat No 400.3.11.1/0430.13/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"GLORIA OKTIVIYANI",nisn:"0077601544",ttl:"KARANGANYAR, 03-10-2007",orangtua:"SUPRIYADI",keputusan:"Surat No 400.3.11.1/0430.14/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"GORISH DEASTA ABIMANYU",nisn:"0079264329",ttl:"WONOGIRI, 02-03-2007",orangtua:"YOYOK HARYANTO",keputusan:"Surat No 400.3.11.1/0430.15/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ILHAM RESTU ADIYAKSA",nisn:"0086846447",ttl:"WONOGIRI, 05-04-2008",orangtua:"SUPRAPTO",keputusan:"Surat No 400.3.11.1/0430.16/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ILHAM TRI SETYAWAN",nisn:"0088400049",ttl:"WONOGIRI, 08-07-2008",orangtua:"KARMO",keputusan:"Surat No 400.3.11.1/0430.17/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KARUNIA INDAH ATIKASARI",nisn:"0085474031",ttl:"WONOGIRI, 20-06-2008",orangtua:"SURONO",keputusan:"Surat No 400.3.11.1/0430.18/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KEISYA ADJIE SENTOSA",nisn:"0077909948",ttl:"GROBOGAN, 27-12-2007",orangtua:"SANTOSO",keputusan:"Surat No 400.3.11.1/0430.19/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KEYSA ARINA INDAH WIBOWO",nisn:"0082218098",ttl:"WONOGIRI, 30-04-2008",orangtua:"ARIF ROCHMAD WIBOWO",keputusan:"Surat No 400.3.11.1/0430.20/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MAGHDALENA SEZA DESTIANTI",nisn:"0088536471",ttl:"WONOGIRI, 18-12-2008",orangtua:"WASIS SETYONO",keputusan:"Surat No 400.3.11.1/0430.21/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MAULINA PUTRI USWATUN HASANAH",nisn:"0085021003",ttl:"WONOGIRI, 28-01-2008",orangtua:"WARSITO",keputusan:"Surat No 400.3.11.1/0430.22/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MEILITA BILQIS SURYANTO",nisn:"0089204762",ttl:"WONOGIRI, 12-05-2008",orangtua:"SURYANTO",keputusan:"Surat No 400.3.11.1/0430.23/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD YUSUF ADITYANTO",nisn:"0086041377",ttl:"WONOGIRI, 15-03-2008",orangtua:"SARYANTO",keputusan:"Surat No 400.3.11.1/0430.24/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NATASYA DINDA LESTARI",nisn:"0084473554",ttl:"WONOGIRI, 30-07-2008",orangtua:"ARIYADI",keputusan:"Surat No 400.3.11.1/0430.25/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NESGA AYU PELSA",nisn:"0086264921",ttl:"WONOGIRI, 02-05-2008",orangtua:"SRIYANTO",keputusan:"Surat No 400.3.11.1/0430.26/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NOVERITA DWI MAYSTIANTI",nisn:"0085092097",ttl:"WONOGIRI, 20-05-2008",orangtua:"WALUYO",keputusan:"Surat No 400.3.11.1/0430.27/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"OKTA ALFENA MAHARANI",nisn:"0073896788",ttl:"WONOGIRI, 22-10-2007",orangtua:"WIDADI",keputusan:"Surat No 400.3.11.1/0430.28/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"PINGKAN SUCI FADILA",nisn:"0089435703",ttl:"WONOGIRI, 21-03-2008",orangtua:"SUDARTO",keputusan:"Surat No 400.3.11.1/0430.29/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RAKA DWIKI VIRGIANSYAH",nisn:"0074119114",ttl:"BEKASI, 09-05-2007",orangtua:"YUNIAR HENDRAS WURYATMO",keputusan:"Surat No 400.3.11.1/0430.30/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"REZA ARYA MUHAMMAD SAPUTRA",nisn:"0086556718",ttl:"WONOGIRI, 04-07-2008",orangtua:"LOSO",keputusan:"Surat No 400.3.11.1/0430.31/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RIRIN DWI ARYANTI",nisn:"0072325825",ttl:"WONOGIRI, 27-12-2007",orangtua:"WARYANTO",keputusan:"Surat No 400.3.11.1/0430.32/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RIRIN WAHYU SETIYAWATI",nisn:"0086810708",ttl:"WONOGIRI, 16-07-2008",orangtua:"TIMAN",keputusan:"Surat No 400.3.11.1/0430.33/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SALSABILA MAULIDA SYAHRINI",nisn:"0082260888",ttl:"WONOGIRI, 19-03-2008",orangtua:"SAHIDNO",keputusan:"Surat No 400.3.11.1/0430.34/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"WINDU KUNCORO",nisn:"0073468958",ttl:"WONOGIRI, 15-04-2007",orangtua:"UMY LESTARI",keputusan:"Surat No 400.3.11.1/0430.35/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ABDULLAH AMIR WILDAN",nisn:"0085889820",ttl:"WONOGIRI, 10-05-2008",orangtua:"SUTIKNO",keputusan:"Surat No 400.3.11.1/0430.36/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ADELIA",nisn:"0088553197",ttl:"WONOGIRI, 25-04-2008",orangtua:"PAIJEM",keputusan:"Surat No 400.3.11.1/0430.37/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ADI WIDHI HARJANTO",nisn:"0071105808",ttl:"WONOGIRI, 15-10-2007",orangtua:"SUWITO",keputusan:"Surat No 400.3.11.1/0430.38/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ALFINZA AZIZ REVIAN",nisn:"0071612903",ttl:"WONOGIRI, 07-11-2007",orangtua:"NANANG KASTOYO",keputusan:"Surat No 400.3.11.1/0430.39/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ALIFA NAKIRA SYAILLA",nisn:"0084555787",ttl:"WONOGIRI, 14-07-2008",orangtua:"SUYATNO",keputusan:"Surat No 400.3.11.1/0430.40/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANDREAN RAMADANI",nisn:"0073687639",ttl:"WONOGIRI, 08-10-2007",orangtua:"SUNARMIN",keputusan:"Surat No 400.3.11.1/0430.41/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANGELINA DESWITA",nisn:"0079065684",ttl:"WONOGIRI, 10-12-2007",orangtua:"GATHOT SURYOPUTRANTO",keputusan:"Surat No 400.3.11.1/0430.42/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANISA NUR DWI ARIYANTI",nisn:"0084858380",ttl:"KARANGANYAR, 28-09-2008",orangtua:"CATUR WIJAYANTO",keputusan:"Surat No 400.3.11.1/0430.43/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"APRILIA NOVIYANTI",nisn:"0084438450",ttl:"WONOGIRI, 10-04-2008",orangtua:"SLAMET",keputusan:"Surat No 400.3.11.1/0430.44/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AULIA DEWI WULAN AGUSTIN",nisn:"0088640839",ttl:"WONOGIRI, 27-08-2008",orangtua:"PAIJAN",keputusan:"Surat No 400.3.11.1/0430.45/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"BINGAH JATI PRADIPTA",nisn:"0085402186",ttl:"WONOGIRI, 13-04-2008",orangtua:"LASTONO",keputusan:"Surat No 400.3.11.1/0430.46/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"CHAYSA ADHENA PUTRI PRILIA",nisn:"0087427848",ttl:"WONOGIRI, 07-04-2008",orangtua:"MULYONO",keputusan:"Surat No 400.3.11.1/0430.47/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"CHINDY CLAUDIA MEYLATI SIAGIAN",nisn:"0088469068",ttl:"BATAM, 12-05-2008",orangtua:"MONGGUR SIAGIAN",keputusan:"Surat No 400.3.11.1/0430.48/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"CRISTIANO DAVIN ERSANANDO WICAKSANA",nisn:"0078426956",ttl:"WONOGIRI, 14-05-2007",orangtua:"NASARET WICAKSANA",keputusan:"Surat No 400.3.11.1/0430.49/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DENTA FIKRI AMARTA",nisn:"0073370151",ttl:"WONOGIRI, 03-10-2007",orangtua:"DODY NURAHMAD BASUKI",keputusan:"Surat No 400.3.11.1/0430.50/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DINA CAHYA MUSTIKA",nisn:"0085882251",ttl:"WONOGIRI, 07-05-2008",orangtua:"SUYONO",keputusan:"Surat No 400.3.11.1/0430.51/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"IBNU MAULANA PUTRA",nisn:"0087177036",ttl:"WONOGIRI, 09-04-2008",orangtua:"MARYADI",keputusan:"Surat No 400.3.11.1/0430.52/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"JAGAD WISANGGENI",nisn:"0094705159",ttl:"WONOGIRI, 17-07-2009",orangtua:"HERYANTO",keputusan:"Surat No 400.3.11.1/0430.53/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KHOIRUL RAHMA DANI",nisn:"0086883547",ttl:"WONOGIRI, 17-01-2008",orangtua:"DWI YANTO",keputusan:"Surat No 400.3.11.1/0430.54/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"LENY TRI UTAMI",nisn:"0085392960",ttl:"WONOGIRI, 28-06-2008",orangtua:"SATIMIN",keputusan:"Surat No 400.3.11.1/0430.55/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"LUKAS SETYAWAN KRISTANTO",nisn:"0086781330",ttl:"WONOGIRI, 04-02-2008",orangtua:"ARIS PELEALU",keputusan:"Surat No 400.3.11.1/0430.56/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MAHYA DWI ANGGIA",nisn:"0088829857",ttl:"WONOGIRI, 08-07-2008",orangtua:"SUNARDI",keputusan:"Surat No 400.3.11.1/0430.57/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MARLINO WAHYU DWI RANDIKA",nisn:"0082873240",ttl:"WONOGIRI, 18-03-2008",orangtua:"MARNO",keputusan:"Surat No 400.3.11.1/0430.58/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMAD KOKO PRASETYO",nisn:"0084782426",ttl:"WONOGIRI, 10-02-2008",orangtua:"SUKATNO",keputusan:"Surat No 400.3.11.1/0430.59/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUTIARA INDAH RISANTI",nisn:"0086154981",ttl:"WONOGIRI, 19-11-2008",orangtua:"SRIYANTO",keputusan:"Surat No 400.3.11.1/0430.60/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NABILAH SHAFA ATIFAH",nisn:"0088851496",ttl:"JAKARTA, 26-01-2008",orangtua:"PUDIYANTO",keputusan:"Surat No 400.3.11.1/0430.61/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NAILA ANGGRAINI",nisn:"0086640912",ttl:"WONOGIRI, 10-03-2008",orangtua:"KUWAT",keputusan:"Surat No 400.3.11.1/0430.62/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NIKO ADI PRABOWO",nisn:"0088434786",ttl:"KARANGANYAR, 24-07-2008",orangtua:"SUTIMIN",keputusan:"Surat No 400.3.11.1/0430.63/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NISRINA TRI HAPSARI",nisn:"0088639746",ttl:"WONOGIRI, 01-05-2008",orangtua:"SUTINO",keputusan:"Surat No 400.3.11.1/0430.64/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"PANGESTIKA VIDYA ASTUTI",nisn:"0085949384",ttl:"WONOGIRI, 25-06-2008",orangtua:"PARNO",keputusan:"Surat No 400.3.11.1/0430.65/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"PUNGKAS EZZA PRASETYO",nisn:"0086922719",ttl:"WONOGIRI, 01-05-2008",orangtua:"SULARJO",keputusan:"Surat No 400.3.11.1/0430.66/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"QQ SATRIYA WIBAWA MULYA",nisn:"0086556105",ttl:"KARAWANG, 12-04-2008",orangtua:"JUMADI",keputusan:"Surat No 400.3.11.1/0430.67/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RAKASAID BAHARI",nisn:"0089124996",ttl:"WONOGIRI, 04-02-2008",orangtua:"LARDI",keputusan:"Surat No 400.3.11.1/0430.68/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SHASA DIAS PRATIDINA",nisn:"0086464435",ttl:"WONOGIRI, 22-01-2008",orangtua:"DIDIK SUBAGYO",keputusan:"Surat No 400.3.11.1/0430.69/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SYAHLUNG HANIK MUFLIHAH",nisn:"0089852144",ttl:"SRAGEN, 28-09-2008",orangtua:"TUGINO",keputusan:"Surat No 400.3.11.1/0430.70/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ADISTY", nisn:"0081651276", ttl:"WONOGIRI, 25-04-2008", orangtua:"PAIJEM", keputusan:"Surat No 400.3.11.1/0430.71/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ALDO PUTRA PRATAMA", nisn:"0082426507", ttl:"BOYOLALI, 27-07-2008", orangtua:"Rita Suhari", keputusan:"Surat No 400.3.11.1/0430.72/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ANGGUN MEILINA FITRI", nisn:"0073683943", ttl:"SUKOHARJO, 04-05-2007", orangtua:"Yanto", keputusan:"Surat No 400.3.11.1/0430.73/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ANNISA SALSABILA KARLINA PUTRI", nisn:"0086862285", ttl:"WONOGIRI, 20-01-2008", orangtua:"Karino", keputusan:"Surat No 400.3.11.1/0430.74/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"AULIA NURHAYATI", nisn:"0085783880", ttl:"WONOGIRI, 11-01-2008", orangtua:"Sularmin", keputusan:"Surat No 400.3.11.1/0430.75/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"AYU TANTIKA SUKMAWATI", nisn:"0082544933", ttl:"WONOGIRI, 26-01-2008", orangtua:"Surjanto", keputusan:"Surat No 400.3.11.1/0430.76/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"AYUDIA SHERLY OKTISAFITRI", nisn:"0079528482", ttl:"WONOGIRI, 21-10-2007", orangtua:"TONY INDARTO", keputusan:"Surat No 400.3.11.1/0430.77/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"BAGUS ARI ARDIKA", nisn:"0088357087", ttl:"WONOGIRI, 07-08-2008", orangtua:"Sutarno", keputusan:"Surat No 400.3.11.1/0430.78/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"BRILLIAN DEWADARU", nisn:"0082592426", ttl:"WONOGIRI, 15-02-2008", orangtua:"JUMALI", keputusan:"Surat No 400.3.11.1/0430.79/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"CESAR SUTOMO", nisn:"0084781540", ttl:"WONOGIRI, 20-04-2008", orangtua:"AGUS SUTOMO", keputusan:"Surat No 400.3.11.1/0430.80/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"CHESYA ALIFIA NUR ASSIFA", nisn:"0086700921", ttl:"WONOGIRI, 25-10-2008", orangtua:"AGUS TRIYANTO", keputusan:"Surat No 400.3.11.1/0430.81/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"DESTIAN HANUNG PAMUNGKAS", nisn:"0076865890", ttl:"WONOGIRI, 01-12-2007", orangtua:"Sugeng Sihono", keputusan:"Surat No 400.3.11.1/0430.82/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"DINA SASYA PUTRIANA", nisn:"0079104406", ttl:"WONOGIRI, 31-12-2007", orangtua:"SLAMET HARYANTO", keputusan:"Surat No 400.3.11.1/0430.83/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"DWI ADI YANTO", nisn:"0073842930", ttl:"SURAKARTA, 06-05-2007", orangtua:"SADIMIN", keputusan:"Surat No 400.3.11.1/0430.84/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ELBRAN KURNIA WAHYUDI", nisn:"0074775472", ttl:"JAKARTA, 27-12-2007", orangtua:"EKO WAHYUDI", keputusan:"Surat No 400.3.11.1/0430.85/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ELVIRA DHELVI CHRISTIAN", nisn:"0086044941", ttl:"WONOGIRI, 30-03-2008", orangtua:"KRISTIAN SUSANTO", keputusan:"Surat No 400.3.11.1/0430.86/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"EVAN ARDIYAN PRATAMA", nisn:"0075515281", ttl:"WONOGIRI, 07-12-2007", orangtua:"Haryono", keputusan:"Surat No 400.3.11.1/0430.87/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"GITA SETYAWATI IKA MAYA DEWI", nisn:"0084779056", ttl:"WONOGIRI, 02-11-2008", orangtua:"Bibit Setiyawan", keputusan:"Surat No 400.3.11.1/0430.88/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"HUSAIN NAJWA ANUGRAH", nisn:"0086515308", ttl:"WONOGIRI, 27-08-2008", orangtua:"SAMIN, S.Pd.", keputusan:"Surat No 400.3.11.1/0430.89/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ILHAM MAGHFIROH RAMADHAN", nisn:"0073249597", ttl:"KARANGANYAR, 23-09-2007", orangtua:"LARDI", keputusan:"Surat No 400.3.11.1/0430.90/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"MAULIDYA DWI RAHAYU", nisn:"0083438241", ttl:"WONOGIRI, 21-03-2008", orangtua:"MARDANI", keputusan:"Surat No 400.3.11.1/0430.91/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"MELANI ALIYAH SAPUTRI", nisn:"0078559490", ttl:"WONOGIRI, 18-11-2007", orangtua:"Tukijo", keputusan:"Surat No 400.3.11.1/0430.92/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"NAILA ARUM RANANTA", nisn:"0082629758", ttl:"WONOGIRI, 22-04-2008", orangtua:"SUSANTO JATMIKO", keputusan:"Surat No 400.3.11.1/0430.93/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"RANGGA ALDI NUGROHO", nisn:"0076776376", ttl:"WONOGIRI, 08-02-2007", orangtua:"Pranyoto Dwi Aji", keputusan:"Surat No 400.3.11.1/0430.94/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"RIZKI SAPUTRA", nisn:"0071023550", ttl:"WONOGIRI, 06-04-2007", orangtua:"Wardi", keputusan:"Surat No 400.3.11.1/0430.95/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ROHMAD YOGA ARIFIN", nisn:"0075917201", ttl:"WONOGIRI, 05-07-2007", orangtua:"SLAMET SUYADI", keputusan:"Surat No 400.3.11.1/0430.96/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"RYO KARUNIA PAMUNGKAS", nisn:"0086605383", ttl:"WONOGIRI, 22-05-2008", orangtua:"ISWANTO", keputusan:"Surat No 400.3.11.1/0430.97/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"SILVIA LITUHAYU NATANELIA TIYAN", nisn:"0085036199", ttl:"WONOGIRI, 09-06-2008", orangtua:"RIYANTO", keputusan:"Surat No 400.3.11.1/0430.98/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"SYERA INDAH PERMATA SARI", nisn:"0083843672", ttl:"WONOGIRI, 27-01-2008", orangtua:"Bandel Wibowo", keputusan:"Surat No 400.3.11.1/0430.99/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"VIANDRA DIAN SAPUTRA", nisn:"0077906656", ttl:"SUKOHARJO, 19-01-2007", orangtua:"Supriadi", keputusan:"Surat No 400.3.11.1/0430.100/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"WAHYU WULANDARI", nisn:"0087981885", ttl:"KLATEN, 09-05-2008", orangtua:"NGATLAN", keputusan:"Surat No 400.3.11.1/0430.101/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"WILLIAM DAFA HUTAMA", nisn:"0076291317", ttl:"WONOGIRI, 25-07-2007", orangtua:"JUMADI", keputusan:"Surat No 400.3.11.1/0430.102/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"WIWID WINATASYA", nisn:"0096529787", ttl:"WONOGIRI, 27-01-2009", orangtua:"Warsilan", keputusan:"Surat No 400.3.11.1/0430.103/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ZELVINA NAYLA PUTRI", nisn:"0089996662", ttl:"WONOGIRI, 01-01-2008", orangtua:"NAZARUDIN", keputusan:"Surat No 400.3.11.1/0430.104/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ACHMAD FAIZAL UTFI PRATAMA", nisn:"0089552736", ttl:"WONOGIRI, 01-05-2008", orangtua:"TRIYANTO", keputusan:"Surat No 400.3.11.1/0430.105/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"AGNES SEPTIA PRASTIWI", nisn:"0073666066", ttl:"WONOGIRI, 18-09-2007", orangtua:"SUGENG", keputusan:"Surat No 400.3.11.1/0430.106/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ALDI HERMANU", nisn:"0089912455", ttl:"WONOGIRI, 25-03-2008", orangtua:"Sulasno", keputusan:"Surat No 400.3.11.1/0430.107/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ALIF FARDHANI NUR IHSAN", nisn:"0089227684", ttl:"WONOGIRI, 21-06-2008", orangtua:"BAMBANG SRI PURWOKO", keputusan:"Surat No 400.3.11.1/0430.108/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ANITA DHIAN MARSANDA", nisn:"0084912831", ttl:"WONOGIRI, 09-03-2008", orangtua:"SUSANTO", keputusan:"Surat No 400.3.11.1/0430.109/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"ARTHALITA MODESTY", nisn:"0083369112", ttl:"WONOGIRI, 25-05-2008", orangtua:"Joko Susilo", keputusan:"Surat No 400.3.11.1/0430.110/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"BACHTIAR KUMALA ADHI", nisn:"0072866008", ttl:"KARANGANYAR, 29-10-2007", orangtua:"Sumardi", keputusan:"Surat No 400.3.11.1/0430.111/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"BRIAN YUDHA PERMANA", nisn:"0087335024", ttl:"WONOGIRI, 19-05-2008", orangtua:"WAHYU PUJIONO", keputusan:"Surat No 400.3.11.1/0430.112/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"CANTHAYUNA AISYAH SALSHALBILLA", nisn:"0076655558", ttl:"SEMARANG, 10-06-2007", orangtua:"AGUS IWAN SUMARSONO", keputusan:"Surat No 400.3.11.1/0430.113/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"CHOIRUL NOVAN ALFATHANI", nisn:"0074642783", ttl:"WONOGIRI, 25-11-2007", orangtua:"Purwanto", keputusan:"Surat No 400.3.11.1/0430.114/2026", nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada" },
+{nama:"DAFIN PUTRA HIDAYAH",nisn:"0065097064",ttl:"WONOGIRI, 15-05-2006",orangtua:"SUGENG WIDODO",keputusan:"Surat No 400.3.11.1/0430.115/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DANANG ARYO MUKTI NUGROHO",nisn:"0088187911",ttl:"KARANGANYAR, 26-03-2008",orangtua:"pak",keputusan:"Surat No 400.3.11.1/0430.116/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DANANG NUR HIDAYAH",nisn:"0075107398",ttl:"WONOGIRI, 10-05-2007",orangtua:"SUNARTO",keputusan:"Surat No 400.3.11.1/0430.117/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DANI ANGGORO",nisn:"0086227584",ttl:"Jakarta, 13-05-2008",orangtua:"DARMIN",keputusan:"Surat No 400.3.11.1/0430.118/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DIMAS RIZKIA PUTRA",nisn:"0076864370",ttl:"TASIKMALAYA, 30-07-2007",orangtua:"YANA MULYANA",keputusan:"Surat No 400.3.11.1/0430.119/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DISTA KESHA ELQAZARY ZANDERYA",nisn:"0084327382",ttl:"Wonogiri, 30-01-2008",orangtua:"YUDI HANDOKO",keputusan:"Surat No 400.3.11.1/0430.120/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DIVA NUR ANDINI",nisn:"0084008878",ttl:"WONOGIRI, 09-02-2008",orangtua:"KUSMAN",keputusan:"Surat No 400.3.11.1/0430.121/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ENDRI ANA SANI",nisn:"0078101763",ttl:"WONOGIRI, 19-11-2007",orangtua:"Sakino",keputusan:"Surat No 400.3.11.1/0430.122/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ERMINA DAMAYANTI",nisn:"0082531730",ttl:"Wonogiri, 02-06-2008",orangtua:"Arfan Efendi",keputusan:"Surat No 400.3.11.1/0430.123/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ILYASA AYUB ASTUTI",nisn:"0086597543",ttl:"WONOGIRI, 24-06-2008",orangtua:"KARMUN",keputusan:"Surat No 400.3.11.1/0430.124/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"INDARTI WAHYUNI PUTRI",nisn:"0073574177",ttl:"WONOGIRI, 30-07-2007",orangtua:"INDARDI WAHYU UTOMO",keputusan:"Surat No 400.3.11.1/0430.125/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"IVA NURAINI",nisn:"0084607542",ttl:"Wonogiri, 25-03-2008",orangtua:"Slamet Riyadi",keputusan:"Surat No 400.3.11.1/0430.126/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MESHIN PUSPITA SARI",nisn:"0073057396",ttl:"Wonogiri, 25-05-2007",orangtua:"Madiyono",keputusan:"Surat No 400.3.11.1/0430.127/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD AFRIZA CHANDRA",nisn:"0088573921",ttl:"MAGELANG, 08-08-2008",orangtua:"TOTOK STIYANTO",keputusan:"Surat No 400.3.11.1/0430.128/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD ARZEAN RAIHANSYAH",nisn:"0082509841",ttl:"WONOGIRI, 02-05-2008",orangtua:"SUMANTO",keputusan:"Surat No 400.3.11.1/0430.129/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NAFA AMELYA",nisn:"0078507400",ttl:"WONOGIRI, 09-11-2007",orangtua:"SUWARDI",keputusan:"Surat No 400.3.11.1/0430.130/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"OLYVIA RIA PRAMITA",nisn:"0071847471",ttl:"Wonogiri, 04-07-2007",orangtua:"Haryanto",keputusan:"Surat No 400.3.11.1/0430.131/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RANGGA PURWANDANI",nisn:"0077235273",ttl:"Wonogiri, 24-07-2007",orangtua:"Sumardi",keputusan:"Surat No 400.3.11.1/0430.132/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RICKY HERLAMBANG",nisn:"0083507864",ttl:"Wonogiri, 01-01-2008",orangtua:"PARMIN",keputusan:"Surat No 400.3.11.1/0430.133/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RISMAWATI",nisn:"0086579826",ttl:"WONOGIRI, 05-06-2008",orangtua:"MARIMO",keputusan:"Surat No 400.3.11.1/0430.134/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"VINA AMALIA PUTRI",nisn:"0071806285",ttl:"Wonogiri, 23-06-2007",orangtua:"Suharyono",keputusan:"Surat No 400.3.11.1/0430.135/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"WANDA ESTHI NUR ROHIMAH",nisn:"0085351085",ttl:"Wonogiri, 06-02-2008",orangtua:"Sadat",keputusan:"Surat No 400.3.11.1/0430.136/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"WILLIS MALIK IBRAHIM",nisn:"0074103257",ttl:"Banyuwangi, 23-06-2007",orangtua:"Madya",keputusan:"Surat No 400.3.11.1/0430.137/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ZASKYA RAMADHANI",nisn:"0079992798",ttl:"WONOGIRI, 23-09-2007",orangtua:"AGUS WIBAWA",keputusan:"Surat No 400.3.11.1/0430.138/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ZELMA PUTRI NURJANNAH",nisn:"0083111225",ttl:"Wonogiri, 24-02-2008",orangtua:"TRI AGUS",keputusan:"Surat No 400.3.11.1/0430.139/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANGGREINI FATMAWATI",nisn:"0088745801",ttl:"WONOGIRI, 29-07-2008",orangtua:"GIYANTO",keputusan:"Surat No 400.3.11.1/0430.140/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"APRILLIA CAHYA PRATIWI",nisn:"0085980460",ttl:"Wonogiri, 01-04-2008",orangtua:"Suradi",keputusan:"Surat No 400.3.11.1/0430.141/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ASSIFAH KUSUMA PUTRI HAPSARI",nisn:"0087176337",ttl:"WONOGIRI, 22-03-2008",orangtua:"SUGIYANTO",keputusan:"Surat No 400.3.11.1/0430.142/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"BUNGA CAHAYA ASA ABADI",nisn:"0088111028",ttl:"WONOGIRI, 13-01-2008",orangtua:"AGUS TRIYONO",keputusan:"Surat No 400.3.11.1/0430.143/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"CHINDY PUTRI AMIARTYASARI",nisn:"0064102344",ttl:"WONOGIRI, 21-12-2006",orangtua:"SARASTO",keputusan:"Surat No 400.3.11.1/0430.144/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DIMAS SAPUTRA",nisn:"0074283148",ttl:"Wonogiri, 04-09-2007",orangtua:"Salamun",keputusan:"Surat No 400.3.11.1/0430.145/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DINARA TABITA NADIA NINDA",nisn:"0073317387",ttl:"wonogiri, 14-09-2007",orangtua:"agus budiarto",keputusan:"Surat No 400.3.11.1/0430.146/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FEBRYAN RAHMAD ABIMANYU",nisn:"0087662613",ttl:"Wonogiri, 29-02-2008",orangtua:"Sunarto",keputusan:"Surat No 400.3.11.1/0430.147/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"GIFA ANTIKA CANDRA",nisn:"0079406643",ttl:"WONOGIRI, 29-09-2007",orangtua:"ARIFIN",keputusan:"Surat No 400.3.11.1/0430.148/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"HUWAIDAH SALSABIILA",nisn:"0088734938",ttl:"WONOGIRI, 26-05-2008",orangtua:"SIDIK IMAM MUSTOFA",keputusan:"Surat No 400.3.11.1/0430.149/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"INDIRA WORO AYU SRIKANDI",nisn:"0082374803",ttl:"Bekasi, 22-01-2008",orangtua:"Juminten",keputusan:"Surat No 400.3.11.1/0430.150/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KENIA AL MAURITZA",nisn:"0086631213",ttl:"Wonogiri, 12-05-2008",orangtua:"Amid",keputusan:"Surat No 400.3.11.1/0430.151/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MAWAR IQMA SAFITRI",nisn:"0078630430",ttl:"Wonogiri, 23-10-2007",orangtua:"Mustamir",keputusan:"Surat No 400.3.11.1/0430.152/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NOVA GITA CAHYANI",nisn:"0071371437",ttl:"Wonogiri, 28-11-2007",orangtua:"RUDIYANTO",keputusan:"Surat No 400.3.11.1/0430.153/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NURDIVA YULIANA",nisn:"0084527324",ttl:"SUMENEP, 29-11-2008",orangtua:"NAWAWI",keputusan:"Surat No 400.3.11.1/0430.154/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RAETISSA ACHA TRI AMBARUKMO",nisn:"0087768404",ttl:"JAKARTA, 11-01-2008",orangtua:"AGUS WIDIYANTO",keputusan:"Surat No 400.3.11.1/0430.155/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RAHMA YUNITA PUTRI",nisn:"0075631514",ttl:"WONOGIRI, 27-06-2007",orangtua:"SUTARDI",keputusan:"Surat No 400.3.11.1/0430.156/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RAMA WIDHI PRADITYAMASTA",nisn:"0073773976",ttl:"Wonogiri, 04-07-2007",orangtua:"EKO BUDI SUSANTO",keputusan:"Surat No 400.3.11.1/0430.157/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RIDHO RAMADHAN PUTRA ROSTY",nisn:"0073632259",ttl:"WONOGIRI, 18-09-2007",orangtua:"SETIYONO",keputusan:"Surat No 400.3.11.1/0430.158/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ROBBY ADIYANSYAH",nisn:"0084047354",ttl:"Wonogiri, 17-04-2008",orangtua:"Karjo",keputusan:"Surat No 400.3.11.1/0430.159/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SHELFI DWI ARYANTI",nisn:"0088981936",ttl:"WONOGIRI, 23-03-2008",orangtua:"JUMINO",keputusan:"Surat No 400.3.11.1/0430.160/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SHIFA AURELLYA PUTRI NUGROHO",nisn:"0087849149",ttl:"Pacitan, 07-02-2008",orangtua:"Agung Nugroho",keputusan:"Surat No 400.3.11.1/0430.161/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SITI NUR AISYAH",nisn:"0083947107",ttl:"WONOGIRI, 20-01-2008",orangtua:"SLAMET WIDODO",keputusan:"Surat No 400.3.11.1/0430.162/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SYAHRANI SRI DHARMESTI",nisn:"0086998916",ttl:"WONOGIRI, 25-07-2008",orangtua:"Sri Darsono",keputusan:"Surat No 400.3.11.1/0430.163/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SYERIL RENGGANIS AYUNDYA WARDANI",nisn:"0075309820",ttl:"WONOGIRI, 31-10-2007",orangtua:"SONI SUGIYANTO",keputusan:"Surat No 400.3.11.1/0430.164/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ADHWA NAURA ARTA PUTRI",nisn:"0087172693",ttl:"Wonogiri, 02-03-2008",orangtua:"Edi Asmoko",keputusan:"Surat No 400.3.11.1/0430.165/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ALYA KARIM BENZEMA",nisn:"0086718209",ttl:"WONOGIRI, 02-04-2008",orangtua:"WALUYO",keputusan:"Surat No 400.3.11.1/0430.166/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DESTIANO EFENDY",nisn:"0084156418",ttl:"Ngawi, 01-12-2008",orangtua:"Aan Triyanto",keputusan:"Surat No 400.3.11.1/0430.167/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DEVI ANDRIAS SARI",nisn:"0084639220",ttl:"Wonogiri, 30-01-2008",orangtua:"Mardiyono",keputusan:"Surat No 400.3.11.1/0430.168/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DHEALOFA RAUDHATUL AULIYAH",nisn:"0066342364",ttl:"Karanganyar, 31-08-2006",orangtua:"Ahmad",keputusan:"Surat No 400.3.11.1/0430.169/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DIANA KYLA INDRIANI",nisn:"0075660598",ttl:"Bogor, 03-12-2007",orangtua:"Warto",keputusan:"Surat No 400.3.11.1/0430.170/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DIMA PRASETYO NUGROHO",nisn:"0083795592",ttl:"WONOGIRI, 30-01-2008",orangtua:"Darno",keputusan:"Surat No 400.3.11.1/0430.171/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DIMAS PRASETYO UTOMO",nisn:"0074142129",ttl:"Wonogiri, 09-11-2007",orangtua:"Wahyudi",keputusan:"Surat No 400.3.11.1/0430.172/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"EGGY FAHMI OKTORA",nisn:"0076341926",ttl:"WONOGIRI, 22-10-2007",orangtua:"Paryoto",keputusan:"Surat No 400.3.11.1/0430.173/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FACHRIZAL AFIF NAZYIRUDIIN",nisn:"0095688089",ttl:"Sragen, 12-10-2009",orangtua:"Nurhan Dwi Agus Setyono",keputusan:"Surat No 400.3.11.1/0430.174/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FARADINA NURFALISHA",nisn:"0073994150",ttl:"Tangerang, 16-08-2007",orangtua:"Yogi Hidayat",keputusan:"Surat No 400.3.11.1/0430.175/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FITRI ANGELINA",nisn:"0075632328",ttl:"Wonogiri, 08-09-2007",orangtua:"Sugito",keputusan:"Surat No 400.3.11.1/0430.176/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"JELITA PUSPA KIRANA",nisn:"0082086229",ttl:"Wonogiri, 03-01-2008",orangtua:"Tarso",keputusan:"Surat No 400.3.11.1/0430.177/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"JESSICA PUTRI RAMADHANI",nisn:"0087542016",ttl:"Wonogiri, 06-09-2008",orangtua:"Yulianto",keputusan:"Surat No 400.3.11.1/0430.178/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KEZIA AFRIL GRISELDA",nisn:"0089370967",ttl:"Wonogiri, 01-04-2008",orangtua:"Tri Widodo",keputusan:"Surat No 400.3.11.1/0430.179/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KEZIA ANNELA UNITLY",nisn:"0087893487",ttl:"Merauke, 11-12-2008",orangtua:"Ellen Lourens Unitly",keputusan:"Surat No 400.3.11.1/0430.180/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"LELA APRIANA",nisn:"0083794519",ttl:"WONOGIRI, 06-04-2008",orangtua:"Sutarno",keputusan:"Surat No 400.3.11.1/0430.181/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"LOVINA AWIS INTANI",nisn:"0088758221",ttl:"WONOGIRI, 14-02-2008",orangtua:"Dwijo Martono",keputusan:"Surat No 400.3.11.1/0430.182/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MITA RAMADHANI",nisn:"0083300003",ttl:"Karanganyar, 05-09-2008",orangtua:"Tatok Mariyanto",keputusan:"Surat No 400.3.11.1/0430.183/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD EL HAQQI",nisn:"0083210224",ttl:"WONOGIRI, 18-05-2008",orangtua:"Agus Pancoko",keputusan:"Surat No 400.3.11.1/0430.184/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NASYTA SEKARTYAS ARDIANTI",nisn:"0083060954",ttl:"Wonogiri, 07-03-2008",orangtua:"Supardi",keputusan:"Surat No 400.3.11.1/0430.185/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NAYLA ARDYANI",nisn:"0082662305",ttl:"Wonogiri, 21-03-2008",orangtua:"Paryanto",keputusan:"Surat No 400.3.11.1/0430.186/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NIKEN RINDIA PERTIWI",nisn:"0087698944",ttl:"Wonogiri, 16-10-2008",orangtua:"Jarwadi",keputusan:"Surat No 400.3.11.1/0430.187/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RACHEL PURBORINI",nisn:"0081759126",ttl:"Wonogiri, 18-06-2008",orangtua:"Tarno",keputusan:"Surat No 400.3.11.1/0430.188/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RIDWAN RIZKI RAMADHAN",nisn:"0085887660",ttl:"WONOGIRI, 19-09-2008",orangtua:"Suratman",keputusan:"Surat No 400.3.11.1/0430.189/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SEYRA ANDRIES",nisn:"0086982031",ttl:"Wonogiri,29-07-2008",orangtua:"Dani Andries",keputusan:"Surat No 400.3.11.1/0430.190/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SZILVY DEBOAZ ARISANDRI",nisn:"0089542320",ttl:"Wonogiri,12-10-2008",orangtua:"Andri Surya Kristianto",keputusan:"Surat No 400.3.11.1/0430.191/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"VIOLETA PRINCESS LAURENCE",nisn:"0077087927",ttl:"WONOGIRI,14-08-2007",orangtua:"YONATHAN HENDRIYANG",keputusan:"Surat No 400.3.11.1/0430.192/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"WIWIK AGENG WAHYUTI",nisn:"0076783407",ttl:"WONOGIRI,18-10-2007",orangtua:"SUPARNO",keputusan:"Surat No 400.3.11.1/0430.193/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"YULIAN DWI NUGROHO",nisn:"0077649482",ttl:"Wonogiri,27-07-2007",orangtua:"Setyo Margono",keputusan:"Surat No 400.3.11.1/0430.194/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ZEIDAN MAULANA WIDODO",nisn:"0081589730",ttl:"Wonogiri,29-08-2008",orangtua:"Eko Widodo",keputusan:"Surat No 400.3.11.1/0430.195/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ZULFIKAR MUZAKKIY",nisn:"0085756267",ttl:"Wonogiri,13-01-2008",orangtua:"Syafrudin",keputusan:"Surat No 400.3.11.1/0430.196/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ABID MAULA OESMAN",nisn:"0084846880",ttl:"WONOGIRI,01-02-2008",orangtua:"ARIA ARFANDI",keputusan:"Surat No 400.3.11.1/0430.197/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ADITYAS DWI APRILIANA",nisn:"0081369977",ttl:"Wonogiri,23-04-2008",orangtua:"SATIYO",keputusan:"Surat No 400.3.11.1/0430.198/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AMIR FAHAD ABDULLOH",nisn:"0084827091",ttl:"Jakarta,11-03-2008",orangtua:"Sukirman",keputusan:"Surat No 400.3.11.1/0430.199/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANDINI AULIA",nisn:"0078075619",ttl:"Wonogiri,16-12-2007",orangtua:"Sugeng",keputusan:"Surat No 400.3.11.1/0430.200/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ARFA GUNAFREYA ERSI",nisn:"0082534949",ttl:"WONOGIRI,26-10-2008",orangtua:"Erwin Priangga",keputusan:"Surat No 400.3.11.1/0430.201/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ASYIFA NUR HIDAYATI",nisn:"0072087486",ttl:"WONOGIRI,13-12-2007",orangtua:"SURATNO",keputusan:"Surat No 400.3.11.1/0430.202/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AZALIA SITI ALMANIAH",nisn:"0083626770",ttl:"Wonogiri,30-01-2008",orangtua:"RIBUT PRIHATIN",keputusan:"Surat No 400.3.11.1/0430.203/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"CALLYSTA ARMEVIA PUTRI",nisn:"0085027157",ttl:"Wonogiri,08-03-2008",orangtua:"Triyono",keputusan:"Surat No 400.3.11.1/0430.204/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"CLARISA NOVITA ANGGRAINI",nisn:"0075363721",ttl:"WONOGIRI,09-11-2007",orangtua:"SURADI",keputusan:"Surat No 400.3.11.1/0430.205/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DAVIN UNTUNG RAHMADHANU",nisn:"0072153700",ttl:"WONOGIRI,09-08-2007",orangtua:"SUWANTO",keputusan:"Surat No 400.3.11.1/0430.206/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DINA AULIA CITRA",nisn:"0077322087",ttl:"Wonogiri,21-04-2007",orangtua:"Sarno",keputusan:"Surat No 400.3.11.1/0430.207/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"EGA ZAFRAN MAULANA",nisn:"0088143900",ttl:"Wonogiri,20-05-2008",orangtua:"Maryadi",keputusan:"Surat No 400.3.11.1/0430.208/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"EMILIA SUCI RAHMA WATI",nisn:"0089280791",ttl:"WONOGIRI,25-01-2008",orangtua:"Kasimo",keputusan:"Surat No 400.3.11.1/0430.209/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"EZA PUTRI AGUSTINA",nisn:"0089405137",ttl:"Wonogiri,08-08-2008",orangtua:"Dwi Anto",keputusan:"Surat No 400.3.11.1/0430.210/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FAIZ AKHMAD ASTSAQIB",nisn:"0089217161",ttl:"Wonogiri,29-07-2008",orangtua:"SRI DARNOTO, S.KM.",keputusan:"Surat No 400.3.11.1/0430.211/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FAIZAH RESTI ANDINI",nisn:"0074304626",ttl:"WONOGIRI,17-12-2007",orangtua:"PUDIYONO",keputusan:"Surat No 400.3.11.1/0430.212/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FAREL CHANDRA KURNIAWAN",nisn:"0073811650",ttl:"NGAWI,24-12-2007",orangtua:"ISWAN",keputusan:"Surat No 400.3.11.1/0430.213/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FARHAN AUFA HANIF",nisn:"0085886090",ttl:"WONOGIRI,25-04-2008",orangtua:"SUPRIYONO",keputusan:"Surat No 400.3.11.1/0430.214/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FITRA ABI SETIO",nisn:"0089015233",ttl:"BEKASI,13-02-2008",orangtua:"DWI MULYONO",keputusan:"Surat No 400.3.11.1/0430.215/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"HAPPY SYALSA CHRISYA RENATA",nisn:"0087034169",ttl:"WONOGIRI,21-05-2008",orangtua:"SUPRIYANTO",keputusan:"Surat No 400.3.11.1/0430.216/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"HAURA MAGHITA ZHILAL",nisn:"0081584777",ttl:"Wonogiri,12-02-2008",orangtua:"Dwi Susanto",keputusan:"Surat No 400.3.11.1/0430.217/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"INEZ ANINDYA NURCAHYA",nisn:"0082931316",ttl:"Wonogiri,16-07-2008",orangtua:"Eko Haryanto",keputusan:"Surat No 400.3.11.1/0430.218/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KEISYA APRILIA SYAHRANI",nisn:"0084286878",ttl:"WONOGIRI,11-04-2008",orangtua:"WARNO",keputusan:"Surat No 400.3.11.1/0430.219/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"LAYLA ROZZA PUTRI SURARD",nisn:"0084737669",ttl:"Wonogiri,11-11-2008",orangtua:"SUKARDI",keputusan:"Surat No 400.3.11.1/0430.220/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MOCHAMAD ARDHANU BRYANTORO",nisn:"0083494102",ttl:"YOGYAKARTA,03-06-2008",orangtua:"MARYOTO",keputusan:"Surat No 400.3.11.1/0430.221/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD RIDHO AL FADHIL",nisn:"0076311672",ttl:"WONOGIRI,01-12-2007",orangtua:"SUPRAPTO",keputusan:"Surat No 400.3.11.1/0430.222/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD SAFRIDHO",nisn:"0085557066",ttl:"JAKARTA,22-02-2008",orangtua:"PRIYANTO",keputusan:"Surat No 400.3.11.1/0430.223/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUTIARA CAHYA SAPUTRI",nisn:"0084344064",ttl:"WONOGIRI,21-02-2008",orangtua:"SUGIYANTO",keputusan:"Surat No 400.3.11.1/0430.224/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NANDIRA MABEL ARYADITHA",nisn:"0085469895",ttl:"JAKARTA,31-10-2008",orangtua:"ARY SUSANTO",keputusan:"Surat No 400.3.11.1/0430.225/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NURUL PRAMONO ADHI ATMOJO",nisn:"0074086987",ttl:"WONOGIRI,30-10-2007",orangtua:"SUGIMIN",keputusan:"Surat No 400.3.11.1/0430.226/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"OSI ARDILA MEILINDA",nisn:"0082497544",ttl:"WONOGIRI,15-05-2008",orangtua:"SANTOSO",keputusan:"Surat No 400.3.11.1/0430.227/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RANDITHA KITTY ARDIYANTI",nisn:"0088228123",ttl:"Wonogiri,08-08-2008",orangtua:"Sukidi",keputusan:"Surat No 400.3.11.1/0430.228/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SAFIRA AGUSTIN",nisn:"0076233893",ttl:"Wonogiri,03-09-2007",orangtua:"Sumardi",keputusan:"Surat No 400.3.11.1/0430.229/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"WIDI AYOMI",nisn:"0089238596",ttl:"MADIUN,29-02-2008",orangtua:"BUDI MARGONO",keputusan:"Surat No 400.3.11.1/0430.230/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"YASHINTA DELLA RIZQI KUSTYANINGSIH",nisn:"0081913338",ttl:"SLEMAN,07-06-2008",orangtua:"SRI KUSTIAWAN",keputusan:"Surat No 400.3.11.1/0430.231/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ZHARA NIYA GUSTINA",nisn:"0088918592",ttl:"WONOGIRI,22-08-2008",orangtua:"SAKIMIN",keputusan:"Surat No 400.3.11.1/0430.232/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ABDUL FATAH NASRULLAH",nisn:"0067790515",ttl:"BANDUNG, 28-05-2006",orangtua:"Joko Indrianto",keputusan:"Surat No 400.3.11.1/0430.233/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AISYAH ADELIA PRAMESTI",nisn:"0075655455",ttl:"Wonogiri, 11-12-2007",orangtua:"Suparmo",keputusan:"Surat No 400.3.11.1/0430.234/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ALVIANO FAKHRUN PUTRA EFFENDI",nisn:"0082588603",ttl:"WONOGIRI, 11-05-2008",orangtua:"TOMI EFFENDI",keputusan:"Surat No 400.3.11.1/0430.235/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AMALIA KHAIRANI",nisn:"0083104193",ttl:"BEKASI, 29-03-2008",orangtua:"KUNCORO",keputusan:"Surat No 400.3.11.1/0430.236/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANDINI AULIA NATASYA",nisn:"0074909192",ttl:"Wonogiri, 08-08-2007",orangtua:"Pardi",keputusan:"Surat No 400.3.11.1/0430.237/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANEIRA TASYA FERIYANTO",nisn:"0085236452",ttl:"Wonogiri, 01-02-2008",orangtua:"Feri Afrianto Putro",keputusan:"Surat No 400.3.11.1/0430.238/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANISSA ARDILA RAHMAWATI",nisn:"0086433779",ttl:"WONOGIRI, 11-08-2008",orangtua:"SUKIJO",keputusan:"Surat No 400.3.11.1/0430.239/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ARWI NUUR HALIMAH",nisn:"0083867821",ttl:"WONOGIRI, 30-06-2008",orangtua:"AGUS HARTANTO",keputusan:"Surat No 400.3.11.1/0430.240/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DHEA PUTRI ANGGITA",nisn:"0086663534",ttl:"WONOGIRI, 11-09-2008",orangtua:"HERI WASKITO",keputusan:"Surat No 400.3.11.1/0430.241/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DIAH AYU LESTARI",nisn:"0079020342",ttl:"WONOGIRI, 23-12-2007",orangtua:"TRI WAHYONO",keputusan:"Surat No 400.3.11.1/0430.242/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DINAR ANINDYA PUTRI",nisn:"0082478789",ttl:"Pacitan, 22-01-2008",orangtua:"Ahsanul Huda Susanto",keputusan:"Surat No 400.3.11.1/0430.243/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FATHIMAH IZAHTUN FAUZIAH",nisn:"0082316421",ttl:"Wonogiri, 30-05-2008",orangtua:"Sariyadi",keputusan:"Surat No 400.3.11.1/0430.244/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"HIFDHAN RIFQI ALFINANDRA",nisn:"0087429662",ttl:"WONOGIRI, 14-01-2008",orangtua:"AGUS SUYANTO, ST.",keputusan:"Surat No 400.3.11.1/0430.245/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"IIN DITA RAHMAWATI",nisn:"0089577972",ttl:"Karanganyar, 14-07-2008",orangtua:"Sugiyanto",keputusan:"Surat No 400.3.11.1/0430.246/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MARSHALIKA NIRMALA TIYAN",nisn:"0082551543",ttl:"Wonogiri, 13-03-2008",orangtua:"Suyanto",keputusan:"Surat No 400.3.11.1/0430.247/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD FARREL ARDAN",nisn:"0089860822",ttl:"Wonogiri, 19-04-2008",orangtua:"Prio Sutanto",keputusan:"Surat No 400.3.11.1/0430.248/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NAILA KHOIRUNNISA",nisn:"0087466882",ttl:"WONOGIRI, 02-07-2008",orangtua:"MIMIN",keputusan:"Surat No 400.3.11.1/0430.249/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NAJWA RAISSA RIFDAH HARDEE",nisn:"0087732039",ttl:"Wonogiri, 05-03-2008",orangtua:"Hardiyoko",keputusan:"Surat No 400.3.11.1/0430.250/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NAYSILLA ANGELICA ARDHI",nisn:"0082688005",ttl:"WONOGIRI, 27-01-2008",orangtua:"SUPARDI",keputusan:"Surat No 400.3.11.1/0430.251/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NOVA EKA FADHILAH",nisn:"0074624559",ttl:"Wonogiri, 21-11-2007",orangtua:"Munadi",keputusan:"Surat No 400.3.11.1/0430.252/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NURUL LITA MAULANI AZIZAH",nisn:"0072212551",ttl:"Wonogiri, 22-12-2007",orangtua:"Suwarno",keputusan:"Surat No 400.3.11.1/0430.253/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"QUEEN MALIKA AZZAHRA",nisn:"0075655912",ttl:"Jakarta Barat, 12-11-2007",orangtua:"Srigiyanto",keputusan:"Surat No 400.3.11.1/0430.254/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RAFAEL MIRELLO PHATRA RASTAHARYA",nisn:"0087345400",ttl:"Wonogiri, 26-05-2008",orangtua:"Rustam",keputusan:"Surat No 400.3.11.1/0430.255/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RALITA HADIJAH",nisn:"0084874770",ttl:"Banjarmasin, 31-07-2008",orangtua:"Satino Rahardi",keputusan:"Surat No 400.3.11.1/0430.256/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RANGGA SAMBA NUGRAHA",nisn:"0077541930",ttl:"Kendal, 16-11-2007",orangtua:"Wiwiet Risdianto",keputusan:"Surat No 400.3.11.1/0430.257/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RHEA DWIKI DEWANTARA",nisn:"0089160275",ttl:"WONOGIRI, 10-04-2008",orangtua:"SUTRISNO",keputusan:"Surat No 400.3.11.1/0430.258/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RIFAI NUR FAUZHI",nisn:"0077445913",ttl:"WONOGIRI, 03-02-2007",orangtua:"JAWADI",keputusan:"Surat No 400.3.11.1/0430.259/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RIVANO AKHYAR AL AFGHANI",nisn:"0085298417",ttl:"WONOGIRI, 09-07-2008",orangtua:"Suratno",keputusan:"Surat No 400.3.11.1/0430.260/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ROFIQO AIRA PUTRA",nisn:"0081756662",ttl:"SURAKARTA, 27-05-2008",orangtua:"SUGITO",keputusan:"Surat No 400.3.11.1/0430.261/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SATRIA FAJAR PRATAMA",nisn:"0084572606",ttl:"WONOGIRI, 01-01-2008",orangtua:"AGUS JOKO WALUYO, S.Pd",keputusan:"Surat No 400.3.11.1/0430.262/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SEVIL DARA VANDANU",nisn:"0088465222",ttl:"WONOGIRI, 27-04-2008",orangtua:"MOCHAMAD NUCHAN",keputusan:"Surat No 400.3.11.1/0430.263/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SHALENA KUSTANTYA ZAHRANISA",nisn:"0087714458",ttl:"Grobogan, 01-04-2008",orangtua:"Indri Kustanto",keputusan:"Surat No 400.3.11.1/0430.264/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SULTAN OKTARIANO WICAKSONO",nisn:"0088960860",ttl:"Solo, 09-10-2008",orangtua:"Sani Tora Wicaksono",keputusan:"Surat No 400.3.11.1/0430.265/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"TYAS WIDIANINGRUM",nisn:"0082712383",ttl:"WONOGIRI, 02-02-2008",orangtua:"HARNO",keputusan:"Surat No 400.3.11.1/0430.266/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"YUDHA EKA SAPUTRA",nisn:"0075402020",ttl:"WONOGIRI, 28-08-2007",orangtua:"MARYONO",keputusan:"Surat No 400.3.11.1/0430.267/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"YULIA PRATIWI",nisn:"0082580561",ttl:"Wonogiri, 14-07-2008",orangtua:"Tri Haryono",keputusan:"Surat No 400.3.11.1/0430.268/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ALEXA NASTITI DEWI",nisn:"0081634057",ttl:"PACITAN, 14-07-2008",orangtua:"NARIMO",keputusan:"Surat No 400.3.11.1/0430.269/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANGGITA AULIA MAHARANI",nisn:"0081140767",ttl:"SLEMAN, 27-09-2008",orangtua:"SARI ASIH",keputusan:"Surat No 400.3.11.1/0430.270/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANGGREK KUSUMA DEWI",nisn:"0076406769",ttl:"WONOGIRI, 29-01-2008",orangtua:"RANTO",keputusan:"Surat No 400.3.11.1/0430.271/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"APRILIA DEA SAGITA",nisn:"0088778769",ttl:"Wonogiri, 01-04-2008",orangtua:"Hariyanto",keputusan:"Surat No 400.3.11.1/0430.272/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ARFIN SATYA RESTAMA",nisn:"0074482073",ttl:"JAKARTA, 31-08-2007",orangtua:"WINARNO",keputusan:"Surat No 400.3.11.1/0430.273/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AYUDIA NURUL OKTASAVINA",nisn:"0076287681",ttl:"WONOGIRI, 07-10-2007",orangtua:"AHMAD DAHLAN",keputusan:"Surat No 400.3.11.1/0430.274/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AYUDIA NURUL OKTASAVIRA",nisn:"0078707271",ttl:"WONOGIRI, 07-10-2007",orangtua:"AHMAD DAHLAN",keputusan:"Surat No 400.3.11.1/0430.275/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"BAGUS PUTRO ARDI WIBOWO",nisn:"0075121444",ttl:"WONOGIRI, 30-06-2007",orangtua:"Supardi",keputusan:"Surat No 400.3.11.1/0430.276/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"BHERLLYYANNAWATY JARWANTO",nisn:"0074005217",ttl:"WONOGIRI, 15-08-2007",orangtua:"JARWANTO",keputusan:"Surat No 400.3.11.1/0430.277/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"BUNGA INDAH LESTARI",nisn:"0075540546",ttl:"Karanganyar, 04-03-2007",orangtua:"Supriono",keputusan:"Surat No 400.3.11.1/0430.278/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DESTI KURNIA SARI",nisn:"0083067998",ttl:"MULYA ASRI, 29-06-2008",orangtua:"MUSLIM",keputusan:"Surat No 400.3.11.1/0430.279/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DEWI AYUNINGRUM",nisn:"0084462613",ttl:"WONOGIRI, 15-05-2008",orangtua:"SUDARWANTO",keputusan:"Surat No 400.3.11.1/0430.280/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DHITO EZZRA PRADANA",nisn:"0088671225",ttl:"Wonogiri, 24-01-2008",orangtua:"Didik Setyawan",keputusan:"Surat No 400.3.11.1/0430.281/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ELANG ARSHY FIRMANSYACH",nisn:"0085258313",ttl:"SURAKARTA, 28-06-2008",orangtua:"ARI KRISTANTO",keputusan:"Surat No 400.3.11.1/0430.282/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FAIHA NAJWAN",nisn:"0074722801",ttl:"KUDUS, 14-11-2007",orangtua:"SUWARNO",keputusan:"Surat No 400.3.11.1/0430.283/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FARROS DAVA JERVAN IRAWAN",nisn:"0075504435",ttl:"Wonogiri, 31-12-2007",orangtua:"Gonang Ardi Irawan, SE",keputusan:"Surat No 400.3.11.1/0430.284/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FAUZAN RIDHO KURNIAWAN",nisn:"0082004227",ttl:"KARANGANYAR, 25-06-2008",orangtua:"KISWANDI",keputusan:"Surat No 400.3.11.1/0430.285/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FEBIOLA FITRIANI",nisn:"0089901011",ttl:"Wonogiri, 05-02-2008",orangtua:"Sukirno",keputusan:"Surat No 400.3.11.1/0430.286/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FIONA PUTRI QUARTUS",nisn:"0089977658",ttl:"WONOGIRI, 28-06-2008",orangtua:"DJARMADI",keputusan:"Surat No 400.3.11.1/0430.287/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"HASAN NAJWA RISQI",nisn:"0088171487",ttl:"WONOGIRI, 27-08-2008",orangtua:"SAMIN.S.Pd.",keputusan:"Surat No 400.3.11.1/0430.288/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KEILLA ARIZTYAS SWISSTYANANDA",nisn:"0082453331",ttl:"Wonogiri, 07-07-2008",orangtua:"Mulatno",keputusan:"Surat No 400.3.11.1/0430.289/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KEZYA REGINA ANASTASYA",nisn:"0077498338",ttl:"KLATEN, 29-11-2007",orangtua:"CYNTHIA BERLINA RAESITHA",keputusan:"Surat No 400.3.11.1/0430.290/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KHARISMA AYU DESWITA",nisn:"0086821795",ttl:"Jakarta, 19-12-2008",orangtua:"SUWARNO",keputusan:"Surat No 400.3.11.1/0430.291/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KHEZIA AMELIA PUTRI",nisn:"0096553659",ttl:"Bekasi, 12-02-2009",orangtua:"Handri Ramdani",keputusan:"Surat No 400.3.11.1/0430.292/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KHOIRUL PUTRA SETIAWAN",nisn:"0086493063",ttl:"MERAUKE, 14-01-2008",orangtua:"NURYANTO",keputusan:"Surat No 400.3.11.1/0430.293/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"LUNA DEARY ZHAFIRA",nisn:"0086919015",ttl:"SUKOHARJO, 05-08-2008",orangtua:"Ari Anggono",keputusan:"Surat No 400.3.11.1/0430.294/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD FERDIKA AKBAR",nisn:"0087526215",ttl:"Wonogiri, 29-07-2008",orangtua:"Suparto",keputusan:"Surat No 400.3.11.1/0430.295/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NABILA KHOIRUNNISA",nisn:"0083667373",ttl:"WONOGIRI, 12-03-2008",orangtua:"SUYANTO",keputusan:"Surat No 400.3.11.1/0430.296/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NAFISA ALFIAN SARI",nisn:"0085852827",ttl:"WONOGIRI, 19-05-2008",orangtua:"TARMADI",keputusan:"Surat No 400.3.11.1/0430.297/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RIVAN ANANDA PASSUSANTO",nisn:"0089374567",ttl:"SERANG, 16-04-2008",orangtua:"SURANTO",keputusan:"Surat No 400.3.11.1/0430.298/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ROFIAH LEILA SYAKIEB",nisn:"0088421466",ttl:"WONOGIRI, 07-01-2008",orangtua:"ARIS PRIYANTO",keputusan:"Surat No 400.3.11.1/0430.299/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SATRIA DWI SAPUTRA",nisn:"0086224048",ttl:"Wonogiri, 09-02-2008",orangtua:"Bagiyo",keputusan:"Surat No 400.3.11.1/0430.300/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SENJA PUTRI MEYLISA",nisn:"0088941772",ttl:"WONOGIRI, 04-05-2008",orangtua:"SUYANTO",keputusan:"Surat No 400.3.11.1/0430.301/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SINTIA MAYA HAPSARI",nisn:"0082090531",ttl:"Wonogiri, 06-06-2008",orangtua:"Wahyu Hanggono",keputusan:"Surat No 400.3.11.1/0430.302/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"WARASTHY WAHYUNINGTYAS",nisn:"0082891943",ttl:"Wonogiri, 30-04-2008",orangtua:"Susanto",keputusan:"Surat No 400.3.11.1/0430.303/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ADHELYA CHESZYA ANGGRAINI",nisn:"0073366969",ttl:"Wonogiri, 03-06-2007",orangtua:"Puji Dwi Rahmanto",keputusan:"Surat No 400.3.11.1/0430.304/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AGITA ISKY SOFIANA",nisn:"0085746143",ttl:"Purworejo, 27-03-2008",orangtua:"Adik Giyadi",keputusan:"Surat No 400.3.11.1/0430.305/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AMANDA DWI ZAKIYYA MAJIID",nisn:"0083090364",ttl:"Wonogiri, 19-01-2008",orangtua:"HARDIYANTO",keputusan:"Surat No 400.3.11.1/0430.306/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ANINDIO RAFAEL CHRIS PUTRA",nisn:"0087813071",ttl:"Sukoharjo, 22-07-2008",orangtua:"Budi Hartono, S.Pt",keputusan:"Surat No 400.3.11.1/0430.307/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"AYU AMANDA",nisn:"0084107536",ttl:"WONOGIRI, 23-01-2008",orangtua:"TARYO",keputusan:"Surat No 400.3.11.1/0430.308/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"CASEY AULIA JULIANI",nisn:"0083635404",ttl:"WONOGIRI, 30-07-2008",orangtua:"HARTONO",keputusan:"Surat No 400.3.11.1/0430.309/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DAFFA IBRAHIM PINANDHITA",nisn:"0075174776",ttl:"WONOGIRI, 16-12-2007",orangtua:"Zainuri",keputusan:"Surat No 400.3.11.1/0430.310/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"DELIA RAHEL PUSPITA",nisn:"0072485371",ttl:"WONOGIRI, 10-12-2007",orangtua:"SIKAM SUKAMTO",keputusan:"Surat No 400.3.11.1/0430.311/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ENNO ADELIA NUR PEBRIANTI",nisn:"0087254327",ttl:"WONOGIRI, 03-02-2008",orangtua:"SUNARNO",keputusan:"Surat No 400.3.11.1/0430.312/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ERNA DWI JULIYANTI",nisn:"0072063405",ttl:"Wonogiri, 05-07-2007",orangtua:"Tarmin",keputusan:"Surat No 400.3.11.1/0430.313/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"EVI YUNITASARI",nisn:"0081883362",ttl:"Wonogiri, 27-06-2008",orangtua:"Wasino",keputusan:"Surat No 400.3.11.1/0430.314/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"FAUZIAH ADNINDA ISNAINI",nisn:"0081027978",ttl:"Wonogiri, 06-01-2008",orangtua:"Sutino",keputusan:"Surat No 400.3.11.1/0430.315/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"HILMI MU'AFI",nisn:"0088325542",ttl:"WONOGIRI, 28-06-2008",orangtua:"SUKADI",keputusan:"Surat No 400.3.11.1/0430.316/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ISNAINI MARDIANA FEBIYANTI",nisn:"0082900502",ttl:"Wonogiri, 11-02-2008",orangtua:"Kasdi",keputusan:"Surat No 400.3.11.1/0430.317/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KALISTA SHOFIA NASTITI",nisn:"0089454709",ttl:"Wonogiri, 29-07-2008",orangtua:"Marsono",keputusan:"Surat No 400.3.11.1/0430.318/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KEISYA MEYLIA GUNAWAN",nisn:"0087466078",ttl:"Jakarta, 03-05-2008",orangtua:"ENDANG GUNAWAN",keputusan:"Surat No 400.3.11.1/0430.319/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KETAWANG SEPTINUGROHO",nisn:"0074625852",ttl:"WONOGIRI, 12-09-2007",orangtua:"SUMARDI",keputusan:"Surat No 400.3.11.1/0430.320/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KEYLA NING CAHYA RAMADHANI",nisn:"0071559049",ttl:"Wonogiri, 21-09-2007",orangtua:"Nanang Tri Cahyono",keputusan:"Surat No 400.3.11.1/0430.321/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"KHALILA FARIHATTUNISSA",nisn:"0075244101",ttl:"WONOGIRI, 12-10-2007",orangtua:"ARIS HARTONO",keputusan:"Surat No 400.3.11.1/0430.322/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MEI CINTA NURROHMAH",nisn:"0087387507",ttl:"WONOGIRI, 11-05-2008",orangtua:"RAKINO",keputusan:"Surat No 400.3.11.1/0430.323/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD AZZAM RAHADIAN",nisn:"0072077892",ttl:"WONOGIRI, 06-12-2007",orangtua:"BAHARI",keputusan:"Surat No 400.3.11.1/0430.324/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"MUHAMMAD FARREL PUTRA PRATAMA",nisn:"0081177206",ttl:"WONOGIRI, 14-02-2008",orangtua:"DARYADI",keputusan:"Surat No 400.3.11.1/0430.325/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NADHIFA KAMILA ISTANI",nisn:"0084938495",ttl:"WONOGIRI, 04-07-2008",orangtua:"KARMIN",keputusan:"Surat No 400.3.11.1/0430.326/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NAUFAL NUR RAMDANI",nisn:"0074604379",ttl:"Wonogiri, 29-09-2007",orangtua:"sunarmin",keputusan:"Surat No 400.3.11.1/0430.327/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"NAYA RENATA",nisn:"0083876314",ttl:"Wonogiri, 09-06-2008",orangtua:"sriyono",keputusan:"Surat No 400.3.11.1/0430.328/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"PRADITA PUTRA PRATAMA",nisn:"0077516950",ttl:"WONOGIRI, 20-11-2007",orangtua:"SARWANTO",keputusan:"Surat No 400.3.11.1/0430.329/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RACHEL FEBRIANA PANDOE",nisn:"0079137380",ttl:"BANTUL, 23-02-2007",orangtua:"DANIEL NICOLAS PANDOE",keputusan:"Surat No 400.3.11.1/0430.330/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RADITYA DIMAS FAJAR KURNIAWAN",nisn:"0087307018",ttl:"BOGOR, 09-03-2008",orangtua:"FRISIONO JAYANTO",keputusan:"Surat No 400.3.11.1/0430.331/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"RIZKI AZIZTYAN NURDIN",nisn:"0081564648",ttl:"Wonogiri, 03-07-2008",orangtua:"Suyatno",keputusan:"Surat No 400.3.11.1/0430.332/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"SUCI SETYAWATI",nisn:"0078596708",ttl:"WONOGIRI, 29-12-2007",orangtua:"Maridianto",keputusan:"Surat No 400.3.11.1/0430.333/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"VALESKA HANUN PRASISTA NIZAR",nisn:"0088744310",ttl:"Wonogiri, 08-01-2008",orangtua:"SILO WAHYUDI",keputusan:"Surat No 400.3.11.1/0430.334/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"YULIA RUSTRIYANA",nisn:"0089563523",ttl:"SUKOHARJO, 14-07-2008",orangtua:"EKO TRIYANTO",keputusan:"Surat No 400.3.11.1/0430.335/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"YUSUF KHODAR AROF",nisn:"0068268496",ttl:"KUPANG, 10-09-2006",orangtua:"Sutasmiran",keputusan:"Surat No 400.3.11.1/0430.336/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ZAZKIA BUNGA ADENIA",nisn:"0075553268",ttl:"WONOGIRI, 01-12-2007",orangtua:"HENDRI KURNIAWAN",keputusan:"Surat No 400.3.11.1/0430.337/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"},
+{nama:"ZIDAN VARISA PANTHOKO",nisn:"0082504729",ttl:"Wonogiri, 06-06-2008",orangtua:"Yosep Rini Panthoko",keputusan:"Surat No 400.3.11.1/0430.338/2026",nilai:"Surat Keterangan Lulus: Ada--Sertifikat TKA: Ada--Buku Raport: Ada"}
+];
+
+function checkResult() {
+    const inputNisn = document.getElementById('inputNisn').value.trim();
+    const student = dataPeserta.find(s => s.nisn === inputNisn);
+
+    if (student) {
+        document.getElementById('loginSection').style.display = "none";
+        document.getElementById('resultSection').style.display = "block";
+        <button onclick="window.print()" class="mt-2 w-full bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700">
+    Cetak Bukti Lulus
+</button>
+        @media print {
+    button, footer { display: none !important; }
+    body { background: white; }
+    .glass-card { box-shadow: none; border: 1px solid #ccc; }
+}
+        document.getElementById('resName').innerText = student.nama;
+        document.getElementById('resNisn').innerText = student.nisn;
+        document.getElementById('resTtl').innerText = student.ttl;
+        document.getElementById('resOrangtua').innerText = student.orangtua;
+        document.getElementById('resKeputusan').innerText = student.keputusan;
+
+        const nilaiHtml = student.nilai.split('--').map(item => {
+            const [label, value] = item.split(':');
+            return `<div class="nilai-row">
+                        <span>${label}</span>
+                        <span>${value}</span>
+                    </div>`;
+        }).join('');
+
+        document.getElementById('resNilai').innerHTML = nilaiHtml;
+
+    } else {
+        alert("Data tidak ditemukan!");
+    }
+}
+</script>
+
+</body>
+</html>
